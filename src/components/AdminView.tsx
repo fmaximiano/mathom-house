@@ -15,7 +15,7 @@ import {
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
-type AuthScreen = "loading" | "setup" | "login" | "verify-2fa" | "forgot-password" | "reset-password" | "authenticated";
+type AuthScreen = "loading" | "setup" | "login" | "verify-2fa" | "forgot-password" | "reset-password" | "authenticated" | "connection-error";
 type AdminTab = "riddles" | "projects" | "mathoms" | "secrets" | "settings";
 
 // ── reCAPTCHA v3 helpers ──
@@ -69,10 +69,12 @@ export default function AdminView({ onClose, isDark }: AdminViewProps) {
     try {
       const resp = await fetch("/api/auth/me");
       if (resp.ok) { setScreen("authenticated"); return; }
-      const status = await fetch("/api/auth/status").then((r) => r.json());
+      const statusResp = await fetch("/api/auth/status");
+      if (!statusResp.ok) { setScreen("connection-error"); return; }
+      const status = await statusResp.json();
       setScreen(status.hasAdmin ? "login" : "setup");
     } catch {
-      setScreen("login");
+      setScreen("connection-error");
     }
   }
 
@@ -86,6 +88,11 @@ export default function AdminView({ onClose, isDark }: AdminViewProps) {
   return (
     <AnimatePresence>
       {screen === "loading" && <AuthOverlay isDark={isDark} onClose={onClose}><LoadingScreen isDark={isDark} /></AuthOverlay>}
+      {screen === "connection-error" && (
+        <AuthOverlay isDark={isDark} onClose={onClose}>
+          <ConnectionErrorScreen isDark={isDark} onRetry={() => { setScreen("loading"); checkAuth(); }} />
+        </AuthOverlay>
+      )}
       {screen === "setup" && <AuthOverlay isDark={isDark} onClose={onClose}><SetupScreen isDark={isDark} onSuccess={handleLoginSuccess} /></AuthOverlay>}
       {screen === "login" && (
         <AuthOverlay isDark={isDark} onClose={onClose}>
@@ -145,6 +152,28 @@ function LoadingScreen({ isDark }: { isDark: boolean }) {
     <div className="flex flex-col items-center gap-3 py-6">
       <Loader2 className="w-6 h-6 animate-spin text-[#C5A059]" />
       <p className={`text-sm ${isDark ? "text-neutral-400" : "text-stone-500"}`}>Checking credentials...</p>
+    </div>
+  );
+}
+
+// ── Connection Error ──
+
+function ConnectionErrorScreen({ isDark, onRetry }: { isDark: boolean; onRetry: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-4 py-6 text-center">
+      <AlertTriangle className="w-8 h-8 text-amber-500" />
+      <h3 className={`text-lg font-semibold ${isDark ? "text-neutral-200" : "text-stone-800"}`}>
+        Could not reach the server
+      </h3>
+      <p className={`text-sm max-w-xs ${isDark ? "text-neutral-400" : "text-stone-500"}`}>
+        The database connection timed out. This may happen if the server was idle — please wait a moment and try again.
+      </p>
+      <button
+        onClick={onRetry}
+        className="mt-2 px-5 py-2 rounded-xl text-sm font-semibold bg-[#C5A059] text-[#12100E] hover:bg-[#d4af6a] transition-colors"
+      >
+        Retry
+      </button>
     </div>
   );
 }
