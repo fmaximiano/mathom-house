@@ -21,25 +21,35 @@ type AdminTab = "riddles" | "projects" | "mathoms" | "secrets" | "settings";
 // ── reCAPTCHA v3 helpers ──
 
 function loadRecaptchaScript(): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if ((window as any).grecaptcha) { resolve(); return; }
     const existing = document.querySelector(`script[src*="recaptcha"]`);
     if (existing) { resolve(); return; }
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
     script.onload = () => resolve();
+    script.onerror = () => reject(new Error("reCAPTCHA script failed to load"));
     document.head.appendChild(script);
+    setTimeout(() => reject(new Error("reCAPTCHA load timeout")), 8000);
   });
 }
 
 async function getCaptchaToken(action: string): Promise<string> {
   if (!RECAPTCHA_SITE_KEY) return "";
-  await loadRecaptchaScript();
-  return new Promise((resolve) => {
-    (window as any).grecaptcha.ready(() => {
-      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action }).then(resolve);
+  try {
+    await loadRecaptchaScript();
+    return await new Promise<string>((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error("reCAPTCHA execute timeout")), 5000);
+      (window as any).grecaptcha.ready(() => {
+        (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action })
+          .then((token: string) => { clearTimeout(timeout); resolve(token); })
+          .catch(reject);
+      });
     });
-  });
+  } catch (err) {
+    console.warn("[reCAPTCHA]", err);
+    return "";
+  }
 }
 
 // ── Main AdminView ──
