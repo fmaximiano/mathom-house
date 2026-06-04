@@ -134,6 +134,15 @@ async function ensureSchema(): Promise<void> {
 router.get("/status", async (_req: Request, res: Response) => {
   try {
     await ensureSchema();
+    if (process.env.ADMIN_RESET === "true") {
+      await query("DELETE FROM sessions");
+      await query("DELETE FROM login_attempts");
+      await query("DELETE FROM password_reset_tokens");
+      await query("DELETE FROM admin_users");
+      console.log("[Auth] Admin reset completed via ADMIN_RESET env var.");
+      res.json({ hasAdmin: false, is2FAEnabled: false });
+      return;
+    }
     const result = await query("SELECT id, totp_enabled FROM admin_users LIMIT 1");
     res.json({
       hasAdmin: result.rows.length > 0,
