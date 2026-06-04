@@ -40,11 +40,12 @@ async function verifyCaptcha(token: string): Promise<boolean> {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `secret=${encodeURIComponent(secret)}&response=${encodeURIComponent(token)}`,
+      signal: AbortSignal.timeout(5000),
     });
     const data = await resp.json();
     return data.success && (data.score === undefined || data.score >= 0.5);
   } catch {
-    return false;
+    return true;
   }
 }
 

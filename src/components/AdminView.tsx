@@ -77,9 +77,9 @@ export default function AdminView({ onClose, isDark }: AdminViewProps) {
 
   async function checkAuth() {
     try {
-      const resp = await fetch("/api/auth/me");
+      const resp = await fetch("/api/auth/me", { signal: AbortSignal.timeout(10000) });
       if (resp.ok) { setScreen("authenticated"); return; }
-      const statusResp = await fetch("/api/auth/status");
+      const statusResp = await fetch("/api/auth/status", { signal: AbortSignal.timeout(10000) });
       if (!statusResp.ok) { setScreen("connection-error"); return; }
       const status = await statusResp.json();
       setScreen(status.hasAdmin ? "login" : "setup");
@@ -208,11 +208,12 @@ function SetupScreen({ isDark, onSuccess }: { isDark: boolean; onSuccess: () => 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, captchaToken }),
+        signal: AbortSignal.timeout(15000),
       });
       const data = await resp.json();
       if (!resp.ok) { setError(data.error); return; }
       onSuccess();
-    } catch { setError("Connection failed."); }
+    } catch { setError("Connection failed. Please try again."); }
     finally { setLoading(false); }
   }
 
@@ -277,6 +278,7 @@ function LoginScreen({ isDark, onSuccess, onNeeds2FA, onForgotPassword }: {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, captchaToken }),
+        signal: AbortSignal.timeout(15000),
       });
       const data = await resp.json();
       if (!resp.ok) {
@@ -355,6 +357,7 @@ function Verify2FAScreen({ isDark, tempToken, onSuccess, onBack }: {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, tempToken }),
+        signal: AbortSignal.timeout(15000),
       });
       const data = await resp.json();
       if (!resp.ok) { setError(data.error); return; }
@@ -422,6 +425,7 @@ function ForgotPasswordScreen({ isDark, onBack }: { isDark: boolean; onBack: () 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, captchaToken }),
+        signal: AbortSignal.timeout(15000),
       });
       const data = await resp.json();
       if (!resp.ok) { setError(data.error); return; }
@@ -501,6 +505,7 @@ function ResetPasswordScreen({ isDark, token, onSuccess }: { isDark: boolean; to
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),
+        signal: AbortSignal.timeout(15000),
       });
       const data = await resp.json();
       if (!resp.ok) { setError(data.error); return; }
