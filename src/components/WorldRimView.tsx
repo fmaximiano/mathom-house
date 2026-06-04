@@ -1,8 +1,8 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Globe, Compass, Send, Check, Loader2, Sparkles, AlertCircle } from "lucide-react";
-import { TELESCOPE_SECRETS } from "../data";
 import { SecretSpot } from "../types";
+import { getSecrets } from "../storage";
 
 interface WorldRimViewProps {
   isFireActive?: boolean;
@@ -10,9 +10,12 @@ interface WorldRimViewProps {
 
 export default function WorldRimView({ isFireActive = true }: WorldRimViewProps) {
   const isDark = !isFireActive;
+  const [secrets, setSecrets] = useState<SecretSpot[]>([]);
   const [selectedSpot, setSelectedSpot] = useState<SecretSpot | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [panCoordinates, setPanCoordinates] = useState({ x: 50, y: 50 });
+
+  useEffect(() => { setSecrets(getSecrets()); }, []);
 
   // Post bird mailer states
   const [senderName, setSenderName] = useState<string>("");
@@ -112,7 +115,7 @@ export default function WorldRimView({ isFireActive = true }: WorldRimViewProps)
                 </span>
  
                 {/* Hotspot triggers */}
-                {TELESCOPE_SECRETS.map((spot) => (
+                {secrets.map((spot) => (
                   <button
                     id={`hotspot_${spot.id}`}
                     key={spot.id}

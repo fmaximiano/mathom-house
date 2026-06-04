@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { DoorOpen, Hammer, Archive, Globe, Sparkles, Flame } from "lucide-react";
+import { DoorOpen, Hammer, Archive, Globe, Sparkles, Flame, Settings } from "lucide-react";
 import { RoomType } from "../types";
 
 interface NavigationProps {
@@ -7,9 +7,10 @@ interface NavigationProps {
   setActiveRoom: (room: RoomType) => void;
   isFireActive?: boolean;
   setIsFireActive?: (active: boolean) => void;
+  onOpenAdmin?: () => void;
 }
 
-export default function Navigation({ activeRoom, setActiveRoom, isFireActive = true, setIsFireActive }: NavigationProps) {
+export default function Navigation({ activeRoom, setActiveRoom, isFireActive = true, setIsFireActive, onOpenAdmin }: NavigationProps) {
   const isDark = !isFireActive;
   const tabs = [
     { id: "door", label: "The Round Door", icon: DoorOpen },
@@ -102,6 +103,19 @@ export default function Navigation({ activeRoom, setActiveRoom, isFireActive = t
               }`}
             >
               {isFireActive ? "Chill Fireplace" : "Stoke the Fire"}
+            </button>
+          )}
+
+          {onOpenAdmin && (
+            <button
+              id="btn_admin"
+              onClick={onOpenAdmin}
+              title="Admin Chambers"
+              className={`cursor-pointer p-1.5 rounded-lg transition-all ${
+                isDark ? "hover:bg-white/5 text-neutral-600 hover:text-neutral-400" : "hover:bg-stone-100 text-stone-400 hover:text-stone-600"
+              }`}
+            >
+              <Settings className="w-3.5 h-3.5" />
             </button>
           )}
         </div>

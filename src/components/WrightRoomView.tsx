@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Hammer, Filter, Play, Cpu, Sparkles, Send, Loader2 } from "lucide-react";
-import { INITIAL_PROJECTS } from "../data";
 import { ProjectItem } from "../types";
+import { getProjects } from "../storage";
 
 interface WrightRoomViewProps {
   isFireActive?: boolean;
@@ -10,6 +10,7 @@ interface WrightRoomViewProps {
 
 export default function WrightRoomView({ isFireActive = true }: WrightRoomViewProps) {
   const isDark = !isFireActive;
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [aiPrompt, setAiPrompt] = useState<string>("");
   const [aiResponse, setAiResponse] = useState<string>("");
@@ -21,11 +22,13 @@ export default function WrightRoomView({ isFireActive = true }: WrightRoomViewPr
   const [gearRpm, setGearRpm] = useState<number>(45);
   const [valvePressure, setValvePressure] = useState<number>(80);
 
+  useEffect(() => { setProjects(getProjects()); }, []);
+
   const categories = ["All", "Automation", "Web App", "AI Experiment", "Craft"];
 
   const filteredProjects = selectedCategory === "All"
-    ? INITIAL_PROJECTS
-    : INITIAL_PROJECTS.filter(p => p.category === selectedCategory);
+    ? projects
+    : projects.filter(p => p.category === selectedCategory);
 
   const starterPrompts = [
     "Design a copper-cogwheel automated lantern",
