@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://YOUR-RAILWAY-APP.up.railway.app/api/:path*" }
+    { "source": "/api/:path*", "destination": "mathom-house.railway.app/api/:path*" }
   ]
 }
