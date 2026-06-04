@@ -346,20 +346,12 @@ export default function WeatherWidget({ isDark }: WeatherWidgetProps) {
         let city = "";
 
         try {
-          const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000 });
-          });
-          lat = pos.coords.latitude;
-          lon = pos.coords.longitude;
-        } catch {
-          try {
-            const ipResp = await fetch("https://ipapi.co/json/");
-            const ipData = await ipResp.json();
-            lat = ipData.latitude;
-            lon = ipData.longitude;
-            city = ipData.city || "";
-          } catch {}
-        }
+          const ipResp = await fetch("https://ipapi.co/json/");
+          const ipData = await ipResp.json();
+          lat = ipData.latitude;
+          lon = ipData.longitude;
+          city = ipData.city || "";
+        } catch {}
 
         if (lat === null || lon === null) {
           if (!cancelled) { setError(true); setLoading(false); }
