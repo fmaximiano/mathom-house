@@ -10,11 +10,14 @@ export function getPool(): pg.Pool {
     if (!connectionString) {
       throw new Error("DATABASE_URL is not configured.");
     }
+    const url = new URL(connectionString);
+    url.searchParams.delete("sslmode");
     pool = new Pool({
-      connectionString,
+      connectionString: url.toString(),
       ssl: { rejectUnauthorized: false },
       max: 5,
       idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
     });
   }
   return pool;
