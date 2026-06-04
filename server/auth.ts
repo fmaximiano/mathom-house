@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import * as OTPAuth from "otpauth";
 import QRCode from "qrcode";
-import { query } from "./db";
+import { query, initSchema } from "./db";
 import { sendPasswordResetEmail } from "./email";
 
 const router = Router();
@@ -122,16 +122,26 @@ export async function authMiddleware(
   }
 }
 
+// ── Ensure tables exist ──
+let schemaReady = false;
+async function ensureSchema(): Promise<void> {
+  if (schemaReady) return;
+  await initSchema();
+  schemaReady = true;
+}
+
 // ── GET /api/auth/status ──
 router.get("/status", async (_req: Request, res: Response) => {
   try {
+    await ensureSchema();
     const result = await query("SELECT id, totp_enabled FROM admin_users LIMIT 1");
     res.json({
       hasAdmin: result.rows.length > 0,
       is2FAEnabled: result.rows[0]?.totp_enabled || false,
     });
   } catch (err: any) {
-    res.status(500).json({ error: "Database error." });
+    console.error("[Auth] Status error:", err.message);
+    res.status(500).json({ error: "Database connection failed." });
   }
 });
 
@@ -150,6 +160,7 @@ router.post("/setup", async (req: Request, res: Response) => {
       if (!valid) { res.status(403).json({ error: "Captcha verification failed." }); return; }
     }
 
+    await ensureSchema();
     const existing = await query("SELECT id FROM admin_users LIMIT 1");
     if (existing.rows.length > 0) {
       res.status(409).json({ error: "Admin account already exists." });
@@ -181,7 +192,8 @@ router.post("/setup", async (req: Request, res: Response) => {
       return;
     }
     console.error("[Auth] Setup error:", err);
-    res.status(500).json({ error: "Could not create account." });
+    const dbError = err.message?.includes("connect") || err.message?.includes("timeout");
+    res.status(500).json({ error: dbError ? "Database connection failed. Please try again." : "Could not create account." });
   }
 });
 
