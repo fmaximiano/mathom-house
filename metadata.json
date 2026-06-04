@@ -1,0 +1,6 @@
+{
+  "name": "Mathom House",
+  "description": "An immersive, interactive personal archive and creative workshop, representing a cozy hobbit-inspired homestead.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

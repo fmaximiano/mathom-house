@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,900;1,400&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-warm-clay: #12100E;
+  --color-cozy-brown: #2C251D;
+  --color-cozy-green: #2D3E2F;
+  --color-gold-accent: #C5A059;
+  --color-parchment: #E5E1D8;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "Fira Code", monospace;
+  
+  --animate-spin-slow: spin 20s linear infinite;
+}
+
+/* Custom styles for Bold Typography Theme */
+.cinematic-bg {
+  background: radial-gradient(circle at 50% 50%, #2C251D 0%, #12100E 100%);
+}
+
+.the-door-border {
+  border: 12px solid #2D3E2F;
+  box-shadow: 0 0 60px rgba(45, 62, 47, 0.4), inset 0 0 40px rgba(0,0,0,0.6);
+}
+
+.room-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0.75;
+}
+
+/* Custom Scrollbar styling for an elegant, non-intrusive UI */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(18, 16, 14, 0.6);
+  border-radius: 999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(197, 160, 89, 0.25);
+  border-radius: 999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 160, 89, 0.55);
+}
+
+/* Standard range slider override for beautiful steampunk dials */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #1C1917;
+  border-radius: 999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #C5A059;
+  border: 2px solid #12100E;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.4);
+  transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
