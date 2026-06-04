@@ -27,3 +27,10 @@ export interface SecretSpot {
   link?: string;
   revealText: string;
 }
+
+export interface RiddleItem {
+  id: string;
+  question: string;
+  answer: string;
+  hint?: string;
+}
