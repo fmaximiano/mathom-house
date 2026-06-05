@@ -16,9 +16,15 @@ const SESSION_HOURS = 2;
 const RESET_TOKEN_HOURS = 1;
 const TEMP_TOKEN_MINUTES = 5;
 
+// ── Startup env check (logged once) ──
+const REQUIRED_ENV = ["DATABASE_URL", "JWT_SECRET"];
+for (const key of REQUIRED_ENV) {
+  if (!process.env[key]) console.warn(`[Auth] WARNING: ${key} is not set — auth will not work.`);
+}
+
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
-  if (!secret) throw new Error("JWT_SECRET is not configured.");
+  if (!secret) throw new Error("JWT_SECRET is not configured. Set it in your environment variables.");
   return secret;
 }
 
@@ -186,6 +192,11 @@ router.post("/setup", async (req: Request, res: Response) => {
       return;
     }
 
+    if (!process.env.JWT_SECRET) {
+      res.status(500).json({ error: "Server misconfigured: JWT_SECRET is not set." });
+      return;
+    }
+
     const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
     const result = await query(
       `INSERT INTO admin_users (email, password_hash) VALUES ($1, $2) RETURNING id`,
@@ -201,8 +212,7 @@ router.post("/setup", async (req: Request, res: Response) => {
       return;
     }
     console.error("[Auth] Setup error:", err);
-    const dbError = err.message?.includes("connect") || err.message?.includes("timeout");
-    res.status(500).json({ error: dbError ? "Database connection failed. Please try again." : "Could not create account." });
+    res.status(500).json({ error: `Setup failed: ${err.message}` });
   }
 });
 
@@ -273,7 +283,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.json({ success: true });
   } catch (err: any) {
     console.error("[Auth] Login error:", err);
-    res.status(500).json({ error: "Login failed." });
+    res.status(500).json({ error: `Login failed: ${err.message}` });
   }
 });
 
