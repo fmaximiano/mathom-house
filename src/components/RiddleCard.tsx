@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Scroll, Eye, EyeOff, Lightbulb, RefreshCw } from "lucide-react";
 import { RiddleItem } from "../types";
 import { getRiddles, getTodaysRiddle } from "../storage";
+import riddles from "./assets/images/riddles_in_the_dark.png"
 
 interface RiddleCardProps {
   isDark: boolean;
@@ -100,7 +101,7 @@ export default function RiddleCard({ isDark }: RiddleCardProps) {
         <blockquote className={`text-base leading-relaxed font-serif italic border-l-2 border-[#C5A059]/30 pl-4 mb-6 transition-colors ${isDark ? "text-[#E5E1D8]/90" : "text-stone-700"}`}>
           &ldquo;{todaysRiddle.question}&rdquo;
         </blockquote>
-        <img src = "./assets/images/riddles_in_the_dark.png"></img>
+        <img src = {riddles}/>
         {todaysRiddle.hint && (
           <AnimatePresence>
             {showHint && (
