@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Scroll, Eye, EyeOff, Lightbulb, RefreshCw } from "lucide-react";
 import { RiddleItem } from "../types";
 import { getRiddles, getTodaysRiddle } from "../storage";
-import riddles from "./assets/images/riddles_in_the_dark.png"
+import riddles from "./assets/images/riddles_in_the_dark.png";
 
 interface RiddleCardProps {
   isDark: boolean;
