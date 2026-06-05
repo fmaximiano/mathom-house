@@ -287,7 +287,7 @@ function MoonPhaseCard({ moonData, isDark }: { moonData: MoonData; isDark: boole
       initial={{ opacity: 0, y: 5, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 5, scale: 0.95 }}
-      className={`absolute -top-2 right-0 translate-y-[-100%] z-50 rounded-xl p-3 backdrop-blur-xl border shadow-xl min-w-[180px] ${
+      className={`absolute top-full right-0 mt-2 z-50 rounded-xl p-3 backdrop-blur-xl border shadow-xl min-w-[180px] ${
         isDark
           ? "bg-[#1A1714]/95 border-white/10 text-neutral-200"
           : "bg-white/95 border-stone-200 text-stone-700 shadow-stone-200/50"
@@ -641,18 +641,18 @@ export default function WeatherWidget({ isDark }: WeatherWidgetProps) {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2, borderColor: "rgba(197, 160, 89, 0.22)" }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className={`weather-widget relative overflow-hidden rounded-2xl p-5 backdrop-blur-xl transition-all duration-500 ${
+      className={`weather-widget relative rounded-2xl p-5 backdrop-blur-xl transition-all duration-500 ${
         isDark
           ? "bg-[#12100E]/70 border border-white/10 text-neutral-100"
           : "bg-white/75 border border-stone-200/90 shadow-lg text-stone-800"
       } ${isRainy ? "weather-rainy" : ""} ${isSnowy ? "weather-snowy" : ""}`}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${conditionColors[gradientKey] || conditionColors.cloudy} pointer-events-none`} />
+      <div className={`absolute inset-0 rounded-2xl overflow-hidden bg-gradient-to-br ${conditionColors[gradientKey] || conditionColors.cloudy} pointer-events-none`} />
 
       {(isRainy || isSnowy) && (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full z-20"
+          className="absolute inset-0 w-full h-full z-20 rounded-2xl"
           style={{ cursor: isRainy ? "grab" : "default" }}
           onMouseMove={isRainy ? onMouseMove : undefined}
           onMouseLeave={isRainy ? onMouseLeave : undefined}
