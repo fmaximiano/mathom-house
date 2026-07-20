@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://mathom-house.up.railway.app/api/:path*" }
+    { "source": "/api/:path*", "destination": "https://mathom-house.up.railway.app/api/:path*" },
+    { "source": "/needle/app", "destination": "/index.html" },
+    { "source": "/needle/app/", "destination": "/index.html" }
   ]
 }
