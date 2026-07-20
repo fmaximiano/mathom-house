@@ -5,17 +5,22 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { initSchema } from "./server/db";
 import authRouter from "./server/auth";
+import threadsRouter from "./server/threads";
 
 dotenv.config();
 
 const app = express();
 const PORT = parseInt(process.env.PORT || "3000", 10);
 
-app.use(express.json());
+// Limit request body size — payloads in this app are always small.
+app.use(express.json({ limit: "32kb" }));
 app.use(cookieParser());
 
 // Auth routes
 app.use("/api/auth", authRouter);
+
+// Threads keyword-search proxy (authentication enforced inside the router)
+app.use("/api/threads", threadsRouter);
 
 // Lazy-loaded GoogleGenAI client to avoid crashes if the key is missing at load time
 let aiClient: GoogleGenAI | null = null;

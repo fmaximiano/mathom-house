@@ -1,0 +1,309 @@
+/* NEEDLE web app — scoped styles, coherent with the institutional pages */
+
+.needle-app {
+  --n-bg: #f7f8fa;
+  --n-surface: #ffffff;
+  --n-text: #1c2430;
+  --n-muted: #4a5568;
+  --n-border: #dfe3e8;
+  --n-accent: #2b5a8c;
+  --n-accent-strong: #1f4368;
+  --n-danger: #9b2c2c;
+  --n-danger-bg: #fdecec;
+
+  min-height: 100vh;
+  background-color: var(--n-bg);
+  color: var(--n-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    "Noto Sans", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.needle-app *,
+.needle-app *::before,
+.needle-app *::after {
+  box-sizing: border-box;
+}
+
+.needle-app a {
+  color: var(--n-accent);
+  text-underline-offset: 2px;
+}
+.needle-app a:hover {
+  color: var(--n-accent-strong);
+}
+.needle-app a:focus-visible,
+.needle-app button:focus-visible,
+.needle-app input:focus-visible,
+.needle-app select:focus-visible {
+  outline: 3px solid var(--n-accent-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.needle-header {
+  background-color: var(--n-surface);
+  border-bottom: 1px solid var(--n-border);
+}
+.needle-header__inner {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+}
+.needle-brand {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.needle-brand__full {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--n-muted);
+  letter-spacing: 0.01em;
+}
+
+.needle-main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.needle-intro {
+  margin: 0 0 0.75rem;
+  color: var(--n-muted);
+}
+.needle-note {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--n-text);
+}
+
+.needle-card {
+  background-color: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.needle-form {
+  display: grid;
+  gap: 1rem;
+}
+.needle-field {
+  display: grid;
+  gap: 0.375rem;
+}
+.needle-field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.needle-field input,
+.needle-field select {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 1rem;
+  color: var(--n-text);
+  background-color: #fff;
+  border: 1px solid var(--n-border);
+  border-radius: 8px;
+}
+.needle-field input:disabled,
+.needle-field select:disabled {
+  background-color: #f0f2f5;
+  color: var(--n-muted);
+}
+
+.needle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--n-accent);
+  border: 1px solid var(--n-accent-strong);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.needle-btn:hover:not(:disabled) {
+  background-color: var(--n-accent-strong);
+}
+.needle-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.needle-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: needle-spin 0.7s linear infinite;
+}
+@keyframes needle-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .needle-spinner {
+    animation: none;
+  }
+}
+
+.needle-status {
+  margin: 1.5rem 0 0;
+}
+.needle-error {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.875rem 1rem;
+  background-color: var(--n-danger-bg);
+  border: 1px solid #f3bcbc;
+  border-left: 4px solid var(--n-danger);
+  border-radius: 8px;
+  color: var(--n-danger);
+  font-weight: 500;
+}
+.needle-error__icon {
+  font-weight: 700;
+}
+.needle-empty {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--n-muted);
+  background-color: var(--n-surface);
+  border: 1px dashed var(--n-border);
+  border-radius: 8px;
+}
+.needle-loading {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  color: var(--n-muted);
+}
+.needle-loading .needle-spinner {
+  border-color: rgba(43, 90, 140, 0.35);
+  border-top-color: var(--n-accent);
+}
+
+.needle-count {
+  margin: 2rem 0 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--n-muted);
+}
+
+.needle-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.needle-result {
+  background-color: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: 10px;
+  padding: 1rem 1.125rem;
+}
+.needle-result__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.needle-result__user {
+  font-weight: 700;
+}
+.needle-result__badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--n-accent-strong);
+  background-color: #e8f0f8;
+  border: 1px solid #cfe0f0;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+.needle-result__time {
+  color: var(--n-muted);
+  font-size: 0.85rem;
+}
+.needle-result__text {
+  margin: 0 0 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.needle-result__link {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.needle-footer {
+  border-top: 1px solid var(--n-border);
+  background-color: var(--n-surface);
+}
+.needle-footer__inner {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+  color: var(--n-muted);
+  font-size: 0.9rem;
+}
+.needle-footer nav ul {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+.needle-footer nav a {
+  font-weight: 600;
+}
+
+/* Login gate */
+.needle-gate {
+  max-width: 26rem;
+  margin: 3rem auto;
+}
+.needle-gate h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+.needle-gate p.needle-gate__hint {
+  margin: 0 0 1.25rem;
+  color: var(--n-muted);
+  font-size: 0.9rem;
+}
+
+.needle-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 30rem) {
+  .needle-brand {
+    font-size: 1.3rem;
+  }
+}
