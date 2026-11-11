@@ -1,0 +1,3 @@
+Arquivos de three.js r186 (examples/jsm), MIT — ver ../three.LICENSE.
+Os imports de "three" foram trocados pelo caminho relativo de ../three.module.min.js.
+Só são usados pelas páginas de laboratório (modelo.html).

@@ -90,13 +90,26 @@ Keep your suggestions and responses atmospheric, elegant, and relatively short. 
   }
 });
 
+// Multi-experience routes and aliases
+app.get("/estatica", (req, res) => res.redirect("/estatica.html"));
+app.get("/passeio-interativo", (req, res) => res.redirect("/passeio-interativo.html"));
+app.get("/interativo", (req, res) => res.redirect("/passeio-interativo.html"));
+app.get("/passeio-leve", (req, res) => res.redirect("/passeio-leve.html"));
+app.get("/frames", (req, res) => res.redirect("/passeio-leve.html"));
+app.get("/passeio-guiado", (req, res) => res.redirect("/passeio-guiado.html"));
+app.get("/passeio", (req, res) => res.redirect("/passeio-guiado.html"));
+app.get("/modelo-interativo", (req, res) => res.redirect("/modelo-interativo.html"));
+app.get("/modelo", (req, res) => res.redirect("/modelo-interativo.html"));
+app.get("/vista-relevo", (req, res) => res.redirect("/passeio-interativo.html?3d"));
+app.get("/relevo", (req, res) => res.redirect("/passeio-interativo.html?3d"));
+
 // Vite middleware integrated into Express
 async function setupVite() {
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: "mpa",
     });
     app.use(vite.middlewares);
   } else {

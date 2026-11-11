@@ -1,13 +1,463 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mathom House — Personal Archive & Cozy Workshop</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mathom-house · Portal de Experiências</title>
+  <meta name="description" content="Uma toca hobbit que, por acaso, contém um site. Escolha sua forma preferida de explorar a Mathom-house.">
+  <meta name="theme-color" content="#0d0b09">
+  <meta property="og:title" content="Mathom-house · Portal de Experiências">
+  <meta property="og:description" content="Uma toca hobbit que, por acaso, contém um site. Explore o arquivo digital, passeios imersivos WebGL e modelos 3D.">
+  <meta property="og:image" content="assets/og.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,50,0;1,9..144,300..600,50,1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0d0b09;
+      --card-bg: rgba(26, 21, 17, 0.75);
+      --card-hover: rgba(36, 29, 23, 0.95);
+      --card-border: rgba(197, 160, 89, 0.22);
+      --card-border-hover: rgba(197, 160, 89, 0.6);
+      --gold: #c5a059;
+      --gold-light: #f3d79b;
+      --text: #f0ebe1;
+      --text-muted: #aba090;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Fundo com vinheta e faíscas */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 18%, rgba(197, 160, 89, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(180, 100, 30, 0.08) 0%, transparent 50%),
+        #0d0b09;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sparks {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .spark {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #e6a73c;
+      border-radius: 50%;
+      filter: blur(1px);
+      opacity: 0.6;
+      animation: rise 12s infinite linear;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(105vh) translateX(0) scale(1); opacity: 0; }
+      15% { opacity: 0.8; }
+      85% { opacity: 0.5; }
+      100% { transform: translateY(-10vh) translateX(60px) scale(0.6); opacity: 0; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 60px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Cabeçalho */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .brand-emblem {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(197, 160, 89, 0.1);
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    .brand-emblem svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: #faf6ef;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      margin-bottom: 14px;
+      opacity: 0.95;
+    }
+
+    .intro {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Grid de Opções */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 89, 0.15);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-top {
+      margin-bottom: 20px;
+    }
+
+    .card-header-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(197, 160, 89, 0.12);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .card-icon {
+      color: var(--gold);
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: #fff9f0;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 16px;
+      margin-top: 14px;
+    }
+
+    .card-tech {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #8c8273;
+    }
+
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gold);
+      transition: gap 0.2s ease, color 0.2s ease;
+    }
+
+    .card:hover .card-action {
+      color: var(--gold-light);
+      gap: 10px;
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(197, 160, 89, 0.15);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer p {
+      margin-bottom: 6px;
+    }
+
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .footer-mono {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #7a7164;
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop"></div>
+  
+  <div class="sparks" aria-hidden="true" id="sparks"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h1>Mathom-house</h1>
+      <p class="tagline">Uma toca hobbit que, por acaso, contém um site.</p>
+      <p class="intro">Selecione uma das opções abaixo para explorar a toca, seus cômodos e o arquivo digital:</p>
+    </header>
+
+    <main class="grid">
+      <!-- 1. Página estática (HTML / CSS) -->
+      <a href="estatica.html" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">Arquivo Digital</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Página estática (HTML / CSS)</h2>
+          <p class="card-desc">O repositório clássico de memórias: arquivo digital pessoal, artigos técnicos, currículo, projetos e o assistente de IA na oficina.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">React · Tailwind · Estático</span>
+          <span class="card-action">Entrar no Arquivo <span>→</span></span>
+        </div>
+      </a>
+
+      <!-- 2. Passeio Interativo (WebGL Híbrido) -->
+      <a href="passeio-interativo.html" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">WebGL2 & Shaders</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Passeio Interativo (WebGL Híbrido)</h2>
+          <p class="card-desc">Caminhada imersiva contínua pela toca com aproximação suave, chamas vivas em shader, áudio sintetizado e blocos de texto ancorados no espaço.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">Cine Engine · WebGL2</span>
+          <span class="card-action">Iniciar Passeio <span>→</span></span>
+        </div>
+      </a>
+
+      <!-- 3. Passeio Leve (Animação Otimizada por Frames) -->
+      <a href="passeio-leve.html" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">Alta Performance</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Passeio Leve (Animação Otimizada por Frames)</h2>
+          <p class="card-desc">Experiência fluida quadro a quadro desenhada diretamente em Canvas 2D. Consumo reduzido de bateria e resposta ágil para qualquer dispositivo.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">Canvas 2D · Frames Pré-render</span>
+          <span class="card-action">Iniciar Passeio Leve <span>→</span></span>
+        </div>
+      </a>
+
+      <!-- 4. Passeio Guiado (Sequência Pré-renderizada) -->
+      <a href="passeio-guiado.html" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">Cycles Fotorealismo</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Passeio Guiado (Sequência Pré-renderizada)</h2>
+          <p class="card-desc">Trajetória pré-calculada com iluminação cinematográfica assada do Blender Cycles, objetos clicáveis e controle interativo de chamas.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">Blender Cycles · Cinemática</span>
+          <span class="card-action">Ver Sequência <span>→</span></span>
+        </div>
+      </a>
+
+      <!-- 5. Modelo Interativo (3D em Tempo Real via Canvas) -->
+      <a href="modelo-interativo.html" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">Three.js 3D</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Modelo Interativo (3D em Tempo Real via Canvas)</h2>
+          <p class="card-desc">Geometria tridimensional completa da toca hobbit com rotação orbital, modo caminhada livre (L), controle de exposição e sombras do sol.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">GLB · Câmera Livre · Luzes</span>
+          <span class="card-action">Explorar Modelo <span>→</span></span>
+        </div>
+      </a>
+
+      <!-- 6. Vista do Relevo (Malha Topográfica 3D) -->
+      <a href="passeio-interativo.html?3d" class="card">
+        <div class="card-top">
+          <div class="card-header-line">
+            <span class="card-badge">Depth Anything V2</span>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            </div>
+          </div>
+          <h2 class="card-title">Vista do Relevo (Malha Topográfica 3D)</h2>
+          <p class="card-desc">As fotografias ganham relevo volumétrico calculado por IA com profundidade métrica, permitindo à câmera navegar livremente pela malha espacial.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tech">Malha 3D · Profundidade IA</span>
+          <span class="card-action">Visualizar Relevo <span>→</span></span>
+        </div>
+      </a>
+    </main>
+
+    <footer>
+      <p>Mathom-house · Um arquivo e experiência interativa de <a href="https://github.com/fmaximiano" target="_blank" rel="noopener">Felipe Maximiano</a></p>
+      <p class="footer-mono">Est. 2026 · Tipografia Fraunces & IBM Plex Mono · Three.js · React</p>
+    </footer>
+  </div>
+
+  <script>
+    // Gerar faíscas dinâmicas flutuantes
+    (function() {
+      const container = document.getElementById('sparks');
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        spark.style.left = Math.random() * 100 + '%';
+        spark.style.animationDelay = (Math.random() * 12) + 's';
+        spark.style.animationDuration = (8 + Math.random() * 8) + 's';
+        spark.style.opacity = (0.3 + Math.random() * 0.6).toFixed(2);
+        container.appendChild(spark);
+      }
+    })();
+  </script>
+</body>
+</html>

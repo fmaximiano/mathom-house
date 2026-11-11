@@ -1,0 +1,41 @@
+/* Passeio em frames (frames.html): só o que muda em relação à home (css/style.css). */
+
+/* a tela usa a altura "grande" do celular: a barra de endereço aparecendo e sumindo não redimensiona a
+   imagem (nem obriga a decodificar os frames de novo) */
+#stage { height: 100vh; height: 100lvh; }
+
+/* a mesma penumbra de cinema da home: bordas mais escuras e um grão fino de película */
+.veu { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.veu::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(125% 95% at 50% 48%, transparent 58%, rgba(8, 5, 3, 0.5) 100%);
+}
+.veu::after {
+  content: ''; position: absolute; inset: -50%; opacity: 0.07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grao 0.9s steps(4) infinite;
+}
+@keyframes grao {
+  0% { transform: translate(0, 0); } 25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } 100% { transform: translate(0, 0); }
+}
+
+/* o anel: tudo fica cinza e distante por alguns segundos */
+#stage { transition: filter 1.2s var(--ease); }
+#stage.is-anel { filter: grayscale(0.85) blur(1.5px) brightness(0.8); }
+
+/* lanternas que acendem perto do cursor (ou do dedo) */
+#brilhos { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.brilho {
+  position: absolute; left: 0; top: 0; width: 240px; height: 240px; margin: -120px 0 0 -120px;
+  border-radius: 50%; opacity: 0; mix-blend-mode: screen; will-change: transform, opacity;
+  background: radial-gradient(closest-side, rgba(255, 200, 125, 0.75), rgba(255, 160, 80, 0.28) 42%, transparent);
+  transition: opacity 0.5s var(--ease);
+}
+
+/* a indicação de rolar some devagar quando o passeio começa */
+.scroll-hint { transition: opacity 1.4s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .veu::after { animation: none; }
+}

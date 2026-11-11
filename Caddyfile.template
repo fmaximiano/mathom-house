@@ -1,0 +1,66 @@
+# Servidor do site no Railway (Railpack + Caddy). É o modelo padrão do Railpack
+# (github.com/railwayapp/railpack, core/providers/staticfile/Caddyfile.template)
+# com uma diferença: Cache-Control "no-cache" — o navegador sempre confere com o
+# servidor se o arquivo mudou (e só baixa de novo o que mudou). Assim, depois de uma
+# atualização, ele nunca mistura arquivos novos com velhos do cache.
+{
+	admin off
+	persist_config off
+	auto_https off
+
+	log {
+		format json
+	}
+
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:{$PORT:80} {
+	log {
+		format json
+	}
+
+	respond /health 200
+
+	# Security headers
+	header {
+		# Enable cross-site filter (XSS) and tell browsers to block detected attacks
+		X-XSS-Protection "1; mode=block"
+		# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+		X-Content-Type-Options "nosniff"
+		# Keep referrer data off of HTTP connections
+		Referrer-Policy "strict-origin-when-cross-origin"
+		# Enable strict Content Security Policy
+		# Mathom-house: o 3D em tempo real (modelo.html) precisa de blob: (texturas tiradas de dentro
+		# do .glb e o "worker" do Draco) e de WebAssembly ('wasm-unsafe-eval', o descompressor Draco)
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: blob: https: *; style-src 'self' 'unsafe-inline' https: *; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https: *; worker-src 'self' blob:; font-src 'self' data: https: *; connect-src 'self' data: blob: https: *; media-src 'self' https: *; object-src 'none'; frame-src 'self' https: *;"
+		# Remove Server header
+		-Server
+		# Mathom-house: sempre revalidar (ETag) — nada de versões misturadas
+		Cache-Control "no-cache"
+	}
+
+	root * {{.StaticFileRoot}}
+
+	# Handle static files
+	file_server {
+		hide .git
+		hide .env*
+	}
+
+	# Compression with more formats
+	encode {
+		gzip
+		zstd
+	}
+
+	# Try files with HTML extension{{if .IndexFallback}} and handle SPA routing{{end}}
+	try_files {path} {path}.html {path}/index.html{{if .IndexFallback}} /index.html{{end}}
+
+	handle_errors {
+		rewrite * /{err.status_code}.html
+		file_server
+	}
+}

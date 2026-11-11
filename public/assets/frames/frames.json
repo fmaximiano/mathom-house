@@ -1,0 +1,15 @@
+{
+ "quadros": 240,
+ "fps": 24,
+ "largura": 1920,
+ "altura": 1080,
+ "tamanhos": [
+  1920,
+  1280,
+  960
+ ],
+ "retrato": {
+  "x": 555,
+  "largura": 810
+ }
+}

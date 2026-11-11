@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mathom-house · laboratório: 3D em tempo real</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/lab.css">
+  <link rel="stylesheet" href="css/switcher.css">
+  <script type="module" src="js/switcher.js"></script>
+</head>
+<body>
+  <canvas id="tela"></canvas>
+  <div id="rolagem"></div>
+  <aside class="lab">
+    <strong>3D em tempo real</strong>
+    <span data-info>carregando…</span>
+    <div class="barra"><i data-barra></i></div>
+    <button type="button" data-livre>Caminhar livre (L)</button>
+    <label>exposição <input type="range" data-exposicao min="0.2" max="3" step="0.05" value="1"></label>
+    <label>luz ambiente <input type="range" data-ambiente min="0" max="3" step="0.05" value="1"></label>
+    <label>luzes da cena <input type="range" data-luzes min="0" max="4" step="0.05" value="1"></label>
+    <label>qualidade <input type="range" data-qualidade min="0.5" max="2" step="0.25" value="1"></label>
+    <label data-assada-rotulo hidden><input type="checkbox" data-assada checked> luz assada do Cycles</label>
+    <label><input type="checkbox" data-sombras checked> sombras do sol</label>
+    <label><input type="checkbox" data-auto checked> qualidade automática</label>
+    <label><input type="checkbox" data-chamas checked> chamas tremulando</label>
+    <label><input type="checkbox" data-pontos> mostrar pontos</label>
+    <pre data-stats></pre>
+    <p class="dica" data-dica>Role para andar · arraste a imagem para olhar em volta · duplo clique volta a olhar para a frente.</p>
+  </aside>
+  <div class="etiqueta" data-etiqueta></div>
+  <div class="aviso" data-aviso hidden></div>
+  <script type="module" src="js/lab/modelo.js"></script>
+</body>
+</html>

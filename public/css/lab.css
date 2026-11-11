@@ -1,0 +1,25 @@
+/* Páginas de laboratório (passeio.html, modelo.html): testes com o modelo 3D da toca. */
+:root { --bg: #0a0705; --ink: #f5e9d0; --dim: rgba(245, 233, 208, .7); --ember: #f0b067; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: 13px/1.45 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
+canvas#tela { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+#rolagem { height: 1700vh; }
+.lab { position: fixed; top: 12px; left: 12px; z-index: 5; display: grid; gap: 6px; max-width: min(320px, calc(100vw - 24px));
+  padding: 10px 12px; background: rgba(20, 14, 9, .82); border: 1px solid rgba(240, 176, 103, .3); border-radius: 8px; backdrop-filter: blur(6px); }
+.lab strong { color: var(--ember); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; }
+.lab label { display: flex; gap: 6px; align-items: center; color: var(--dim); }
+.lab input[type=range] { width: 100%; }
+.lab button { font: inherit; background: #efe2c4; color: #3a2616; border: 0; border-radius: 5px; padding: 5px 8px; cursor: pointer; }
+.lab .dica { margin: 0; color: var(--dim); font-size: 12px; }
+.lab pre { margin: 0; white-space: pre-wrap; color: var(--dim); font-size: 11px; }
+.barra { height: 3px; background: rgba(255, 255, 255, .12); border-radius: 2px; overflow: hidden; }
+.barra i { display: block; height: 100%; width: 0; background: var(--ember); transition: width .2s; }
+.etiqueta { position: fixed; z-index: 6; pointer-events: none; padding: 4px 8px; border-radius: 4px; background: rgba(20, 14, 9, .85);
+  border: 1px solid var(--ember); color: var(--ink); transform: translate(12px, 12px); display: none; }
+.aviso { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg); }
+.aviso div { max-width: 560px; }
+.aviso[hidden] { display: none; }
+.aviso code { color: var(--ember); }
+.ponto { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
+  border: 2px solid var(--ember); box-shadow: 0 0 0 2px rgba(0,0,0,.6); }
+.ponto span { position: absolute; left: 14px; top: -4px; white-space: nowrap; font-size: 11px; text-shadow: 0 1px 3px #000; }

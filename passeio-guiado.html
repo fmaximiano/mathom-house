@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mathom-house · laboratório: passeio pré-renderizado</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/lab.css">
+  <link rel="stylesheet" href="css/switcher.css">
+  <script type="module" src="js/switcher.js"></script>
+</head>
+<body>
+  <canvas id="tela"></canvas>
+  <div id="rolagem"></div>
+  <aside class="lab">
+    <strong>Passeio pré-renderizado</strong>
+    <span data-info>carregando…</span>
+    <div class="barra"><i data-barra></i></div>
+    <label><input type="checkbox" data-pontos> mostrar pontos e clicáveis</label>
+    <label><input type="checkbox" data-luzes checked> luzes tremulando</label>
+    <p class="dica">Role para andar. Passe o mouse sobre um objeto clicável.</p>
+  </aside>
+  <div class="etiqueta" data-etiqueta></div>
+  <div class="aviso" data-aviso hidden></div>
+  <script type="module" src="js/lab/passeio.js"></script>
+</body>
+</html>

@@ -1,7 +1,19 @@
 {
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://mathom-house.up.railway.app/api/:path*" },
-    { "source": "/needle/app", "destination": "/index.html" },
-    { "source": "/needle/app/", "destination": "/index.html" }
+    { "source": "/needle/app", "destination": "/estatica.html" },
+    { "source": "/needle/app/", "destination": "/estatica.html" },
+    { "source": "/estatica", "destination": "/estatica.html" },
+    { "source": "/passeio-interativo", "destination": "/passeio-interativo.html" },
+    { "source": "/interativo", "destination": "/passeio-interativo.html" },
+    { "source": "/passeio-leve", "destination": "/passeio-leve.html" },
+    { "source": "/frames", "destination": "/passeio-leve.html" },
+    { "source": "/passeio-guiado", "destination": "/passeio-guiado.html" },
+    { "source": "/passeio", "destination": "/passeio-guiado.html" },
+    { "source": "/modelo-interativo", "destination": "/modelo-interativo.html" },
+    { "source": "/modelo", "destination": "/modelo-interativo.html" },
+    { "source": "/vista-relevo", "destination": "/passeio-interativo.html?3d" },
+    { "source": "/relevo", "destination": "/passeio-interativo.html?3d" }
   ]
 }

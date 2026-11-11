@@ -1,0 +1,205 @@
+{
+ "_leia": "Pontos da imagem seguidos quadro a quadro por rastrear.py. quadro: onde o ponto foi marcado (1 = frame_0001); u, v: posição nesse quadro (0..1, da esquerda e do topo); de/ate: trecho a seguir.",
+ "ancoras": [
+  {
+   "id": "macaneta",
+   "quadro": 1,
+   "u": 0.487,
+   "v": 0.49,
+   "de": 1,
+   "ate": 34
+  },
+  {
+   "id": "lanterna_porta",
+   "quadro": 1,
+   "u": 0.485,
+   "v": 0.237,
+   "de": 1,
+   "ate": 40
+  },
+  {
+   "id": "porta_arco",
+   "quadro": 36,
+   "u": 0.655,
+   "v": 0.28,
+   "de": 24,
+   "ate": 60
+  },
+  {
+   "id": "soleira",
+   "quadro": 56,
+   "u": 0.5,
+   "v": 0.86,
+   "de": 44,
+   "ate": 72
+  },
+  {
+   "id": "bau",
+   "quadro": 56,
+   "u": 0.77,
+   "v": 0.64,
+   "de": 42,
+   "ate": 86
+  },
+  {
+   "id": "lanterna_hall_e",
+   "quadro": 56,
+   "u": 0.336,
+   "v": 0.37,
+   "de": 40,
+   "ate": 86
+  },
+  {
+   "id": "lanterna_hall_d",
+   "quadro": 56,
+   "u": 0.665,
+   "v": 0.39,
+   "de": 40,
+   "ate": 86
+  },
+  {
+   "id": "nota_plantas",
+   "quadro": 108,
+   "u": 0.29,
+   "v": 0.28,
+   "de": 92,
+   "ate": 132
+  },
+  {
+   "id": "nota_engrenagens",
+   "quadro": 108,
+   "u": 0.62,
+   "v": 0.3,
+   "de": 92,
+   "ate": 132
+  },
+  {
+   "id": "nota_prototipos",
+   "quadro": 108,
+   "u": 0.3,
+   "v": 0.66,
+   "de": 92,
+   "ate": 132
+  },
+  {
+   "id": "laptop",
+   "quadro": 128,
+   "u": 0.235,
+   "v": 0.57,
+   "de": 96,
+   "ate": 150
+  },
+  {
+   "id": "livros",
+   "quadro": 128,
+   "u": 0.365,
+   "v": 0.55,
+   "de": 96,
+   "ate": 152
+  },
+  {
+   "id": "plantas",
+   "quadro": 128,
+   "u": 0.462,
+   "v": 0.46,
+   "de": 96,
+   "ate": 152
+  },
+  {
+   "id": "mapas",
+   "quadro": 128,
+   "u": 0.44,
+   "v": 0.355,
+   "de": 96,
+   "ate": 152
+  },
+  {
+   "id": "lanterna_oficina",
+   "quadro": 128,
+   "u": 0.555,
+   "v": 0.3,
+   "de": 96,
+   "ate": 150
+  },
+  {
+   "id": "lareira_longe",
+   "quadro": 128,
+   "u": 0.715,
+   "v": 0.6,
+   "de": 106,
+   "ate": 150
+  },
+  {
+   "id": "lareira",
+   "quadro": 152,
+   "u": 0.49,
+   "v": 0.58,
+   "de": 136,
+   "ate": 190
+  },
+  {
+   "id": "tapete",
+   "quadro": 152,
+   "u": 0.62,
+   "v": 0.85,
+   "de": 130,
+   "ate": 176
+  },
+  {
+   "id": "chaleira",
+   "quadro": 176,
+   "u": 0.555,
+   "v": 0.79,
+   "de": 144,
+   "ate": 196
+  },
+  {
+   "id": "poltrona",
+   "quadro": 176,
+   "u": 0.71,
+   "v": 0.69,
+   "de": 150,
+   "ate": 196
+  },
+  {
+   "id": "janela_quadro",
+   "quadro": 176,
+   "u": 0.68,
+   "v": 0.4,
+   "de": 150,
+   "ate": 210
+  },
+  {
+   "id": "outra_janela",
+   "quadro": 204,
+   "u": 0.835,
+   "v": 0.4,
+   "de": 194,
+   "ate": 234
+  },
+  {
+   "id": "janela_final",
+   "quadro": 240,
+   "u": 0.495,
+   "v": 0.4,
+   "de": 200,
+   "ate": 240
+  },
+  {
+   "id": "lanterna_fim_e",
+   "quadro": 240,
+   "u": 0.125,
+   "v": 0.32,
+   "de": 206,
+   "ate": 240
+  },
+  {
+   "id": "lanterna_fim_d",
+   "quadro": 240,
+   "u": 0.85,
+   "v": 0.32,
+   "de": 206,
+   "ate": 240
+  }
+ ]
+}

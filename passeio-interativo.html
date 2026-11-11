@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mathom-house</title>
+  <meta name="description" content="Uma toca cheia de coisas que ninguém sabe bem para que servem — projetos, experimentos, ideias e achados.">
+  <meta name="theme-color" content="#0a0705">
+  <meta property="og:title" content="Mathom-house">
+  <meta property="og:description" content="Entre pela porta redonda. Role para caminhar pela toca.">
+  <meta property="og:image" content="assets/og.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,50,0;1,9..144,300..600,50,1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/scenes/manifest.json" as="fetch" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/switcher.css">
+  <link rel="modulepreload" href="vendor/three.module.min.js">
+  <script type="module" src="js/switcher.js"></script>
+</head>
+<body class="is-loading">
+  <a class="skip" href="#texto">Ler a Mathom-house em versão de texto</a>
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <!-- Camada de texto: os blocos são posicionados dentro da casa pelo JS -->
+  <main id="layer" aria-label="Mathom-house"></main>
+
+  <!-- Objetos do Mathom -->
+  <div id="curios" aria-label="Objetos do Mathom"></div>
+
+  <!-- Página do livro de registros (detalhe de um objeto) -->
+  <aside id="ledger" aria-hidden="true" aria-labelledby="ledger-title" role="dialog">
+    <div class="ledger__page">
+      <button class="ledger__close" type="button" aria-label="Fechar">×</button>
+      <p class="ledger__no"></p>
+      <h2 class="ledger__title" id="ledger-title"></h2>
+      <p class="ledger__meta"></p>
+      <div class="ledger__rule" aria-hidden="true"></div>
+      <p class="ledger__text"></p>
+      <p class="ledger__actions"></p>
+    </div>
+  </aside>
+
+  <!-- Luneta do World-rim -->
+  <div id="scope" aria-hidden="true"><p class="scope__text"></p></div>
+
+  <!-- Interface mínima -->
+  <header class="chrome">
+    <button class="chrome__mark" type="button" aria-label="Voltar à porta de entrada">Mathom-house</button>
+    <button class="chrome__sound" type="button" aria-pressed="false" aria-label="Som">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="chrome__sound-label">som</span>
+    </button>
+  </header>
+  <nav class="burrow" aria-label="Mapa da toca">
+    <svg class="burrow__path" viewBox="0 0 24 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M12 4 C 4 40, 20 60, 12 100 S 4 160, 12 196" />
+      <path class="burrow__ink" d="M12 4 C 4 40, 20 60, 12 100 S 4 160, 12 196" />
+    </svg>
+    <ol class="burrow__rooms"></ol>
+  </nav>
+  <p class="whisper" aria-live="polite"></p>
+  <div class="scroll-hint" aria-hidden="true"><span></span></div>
+
+  <!-- Entrada -->
+  <section id="threshold" aria-live="polite">
+    <div class="threshold__inner">
+      <div class="candle" aria-hidden="true"><div class="candle__flame"></div><div class="candle__wick"></div><div class="candle__body"></div></div>
+      <h1 class="threshold__title">Mathom-house</h1>
+      <p class="threshold__status"><span class="threshold__label"></span> <span class="threshold__pct">0%</span></p>
+      <div class="threshold__bar"><i></i></div>
+      <div class="threshold__actions">
+        <button type="button" class="btn btn--primary" data-enter="sound"></button>
+        <button type="button" class="btn btn--quiet" data-enter="silent"></button>
+      </div>
+    </div>
+  </section>
+
+  <div id="scroll-space" aria-hidden="true"></div>
+
+  <noscript>
+    <div class="noscript">
+      <h1>Mathom-house</h1>
+      <p>Esta casa precisa de JavaScript para acender as lanternas. Ative-o para entrar.</p>
+    </div>
+  </noscript>
+
+  <script>
+    // Depois de uma atualização, o navegador pode misturar arquivos novos com velhos do
+    // cache, e a casa não abre. Se isso acontecer antes de ela abrir, busca de novo (uma
+    // vez só) o código e os dados, e recarrega.
+    (function () {
+      var KEY = 'mathom-refresh';
+      window.mathomRefresh = function () {
+        try { if (sessionStorage.getItem(KEY)) return false; sessionStorage.setItem(KEY, '1'); } catch (e) { return false; }
+        var urls = performance.getEntriesByType('resource').map(function (r) { return r.name; })
+          .filter(function (u) { return u.indexOf(location.origin) === 0 && /\.(js|json|css)(\?|$)/.test(u); });
+        urls.push(location.href);
+        Promise.all(urls.map(function (u) { return fetch(u, { cache: 'reload' }).catch(function () {}); }))
+          .then(function () { location.reload(); });
+        return true;
+      };
+      addEventListener('error', function (e) {
+        if (window.mathomBooted) return;
+        if ((e.target && e.target.tagName === 'SCRIPT') || e instanceof ErrorEvent) window.mathomRefresh();
+      }, true);
+    })();
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
